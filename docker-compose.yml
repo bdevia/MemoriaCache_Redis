@@ -1,0 +1,42 @@
+version: '3.7'
+
+networks:
+  default:
+    name: "my-net"
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: docker.io/bitnami/postgresql:11
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_DATABASE=tiendita
+      - ALLOW_EMPTY_PASSWORD=yes
+      - POSTGRESQL_PASSWORD=2022
+
+  redis:
+    container_name: redis
+    image: bitnami/redis:6.2
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+  
+  servidor:
+    container_name: gRPC_server
+    image: inventario
+    depends_on:
+      - postgres
+    restart: always
+
+  cliente:
+    container_name: gRPC_client
+    image: buscador
+    ports:
+      - 3000:3000
+    depends_on:
+      - redis
+      - servidor
+    restart: always
+

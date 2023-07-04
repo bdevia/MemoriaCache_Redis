@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.struct";
+option java_outer_classname = "structProto";
+option objc_class_prefix = "HLW";
+
+package struct;
+
+service Buscador {
+  rpc Found (Request) returns (stream Reply) {}
+}
+
+message Request {
+  string llave = 1;
+}
+
+message Reply {
+  string name = 1;
+  float price = 2;
+  string category = 3;
+  int32 count = 4;
+}

@@ -1,0 +1,6 @@
+FROM node:17
+WORKDIR /app
+RUN npm init -y
+RUN npm install express pg @grpc/grpc-js @grpc/proto-loader async google-protobuf lodash minimist 
+COPY . .
+CMD ["node", "gRPC-server.js"]
